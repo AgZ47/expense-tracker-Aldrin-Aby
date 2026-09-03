@@ -1,22 +1,42 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Entry } from "./Components/Entry";
 import { Header } from "./Components/Header";
 import { Transaction } from "./Components/Transaction";
 import type { transactionProps } from "./Components/Transaction";
 
 function App() {
-  const [transactions, setTransactions] = useState<transactionProps[]>([
-    {
-      id: "1",
-      amount: 500,
-      category: "expense",
-      date: new Date("2026-09-03T12:00:00Z"),
-      desc: "pari",
-    },
-  ]);
+  const [transactions, setTransactions] = useState<transactionProps[]>(() => {
+    const savedData = localStorage.getItem("expense-tracker-data");
+
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData);
+        return parsedData.map((t: transactionProps) => ({
+          ...t,
+          date: new Date(t.date),
+        }));
+      } catch (error) {
+        console.error("Failed to parse local storage data:", error);
+      }
+    }
+
+    return [
+      {
+        id: "1",
+        amount: 500,
+        category: "expense",
+        date: new Date("2026-09-03T12:00:00Z"),
+        desc: "pari",
+      },
+    ];
+  });
 
   const [editingTransaction, setEditingTransaction] =
     useState<transactionProps | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem("expense-tracker-data", JSON.stringify(transactions));
+  }, [transactions]);
 
   function handleSave(transaction: transactionProps) {
     if (editingTransaction) {

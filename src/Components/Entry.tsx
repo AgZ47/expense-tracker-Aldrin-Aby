@@ -45,16 +45,26 @@ export const Entry = (props: entryProps) => {
   };
 
   return (
-    <div className="bg-sky-300 rounded-xl border-3 border-sky-500 text-black p-2 h-full flex flex-col gap-2 w-full">
-      <h2>{props.editingTransaction ? "Edit Entry" : "New Entry"}</h2>
+    <div className="bg-sky-300 rounded-xl border-3 border-sky-400 text-black p-2 h-full flex flex-col gap-2 w-full">
+      <h2 className="text-center font-bold text-lg">
+        {props.editingTransaction ? "Edit Entry" : "New Entry"}
+      </h2>
       <input
         ref={amountRef}
         type="number"
-        className="bg-white p-1"
+        className="bg-sky-400 p-1 rounded-xl border-2 border-sky-500"
         placeholder="Enter Amount"
       />
-      <input ref={datetimeRef} type="datetime-local" className="bg-white p-1" />
-      <select ref={categoryRef} className="bg-white p-1" defaultValue="">
+      <input
+        ref={datetimeRef}
+        type="datetime-local"
+        className="bg-sky-400 p-1 rounded-xl border-2 border-sky-500"
+      />
+      <select
+        ref={categoryRef}
+        className="bg-sky-400 p-1 rounded-xl border-2 border-sky-500"
+        defaultValue=""
+      >
         <option value="" disabled>
           Select Category...
         </option>
@@ -64,13 +74,13 @@ export const Entry = (props: entryProps) => {
       <input
         ref={descRef}
         type="text"
-        className="bg-white p-1"
+        className="bg-sky-400 p-1 rounded-xl border-2 border-sky-500"
         placeholder="Enter Description"
       />
 
       <div className="flex gap-2 mt-2">
         <button
-          className="bg-white rounded p-1 w-full font-bold"
+          className="bg-sky-100 rounded-xl p-1 w-full font-bold border-2 border-sky-200"
           onClick={handleSubmit}
         >
           {props.editingTransaction ? "Update" : "Add+"}
@@ -78,7 +88,7 @@ export const Entry = (props: entryProps) => {
 
         {props.editingTransaction && (
           <button
-            className="bg-red-400 text-white rounded p-1 w-full font-bold"
+            className="bg-red-400 text-white rounded-xl p-1 w-full font-bold"
             onClick={props.onCancelEdit}
           >
             Cancel
