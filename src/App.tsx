@@ -20,15 +20,7 @@ function App() {
       }
     }
 
-    return [
-      {
-        id: "1",
-        amount: 500,
-        category: "expense",
-        date: new Date(),
-        desc: "Initial Transaction",
-      },
-    ];
+    return [];
   });
 
   const [editingTransaction, setEditingTransaction] =
