@@ -18,6 +18,15 @@ export const Entry = (props: entryProps) => {
   const categoryRef = useRef<HTMLSelectElement>(null!);
   const descRef = useRef<HTMLInputElement>(null!);
 
+  const resetForm = () => {
+    if (amountRef.current) amountRef.current.value = "";
+    if (categoryRef.current) categoryRef.current.value = "";
+    if (descRef.current) descRef.current.value = "";
+
+    if (datetimeRef.current)
+      datetimeRef.current.value = formatForInput(new Date());
+  };
+
   useEffect(() => {
     if (props.editingTransaction) {
       amountRef.current.value = props.editingTransaction.amount.toString();
@@ -25,14 +34,16 @@ export const Entry = (props: entryProps) => {
       categoryRef.current.value = props.editingTransaction.category;
       descRef.current.value = props.editingTransaction.desc;
     } else {
-      amountRef.current.value = "";
-      datetimeRef.current.value = "";
-      categoryRef.current.value = "";
-      descRef.current.value = "";
+      resetForm();
     }
   }, [props.editingTransaction]);
 
   const handleSubmit = () => {
+    if (!amountRef.current.value || !categoryRef.current.value) {
+      alert("Please enter an amount and category");
+      return;
+    }
+
     props.onClickHandler({
       id: props.editingTransaction
         ? props.editingTransaction.id
@@ -42,6 +53,10 @@ export const Entry = (props: entryProps) => {
       category: categoryRef.current.value as "income" | "expense",
       desc: descRef.current.value,
     });
+
+    if (!props.editingTransaction) {
+      resetForm();
+    }
   };
 
   return (
@@ -80,7 +95,7 @@ export const Entry = (props: entryProps) => {
 
       <div className="flex gap-2 mt-2">
         <button
-          className="bg-sky-100 rounded-xl p-1 w-full font-bold border-2 border-sky-200"
+          className="bg-sky-100 px-3 py-1 rounded-lg border-2 border-sky-400 font-semibold text-sm w-full hover:bg-sky-200 "
           onClick={handleSubmit}
         >
           {props.editingTransaction ? "Update" : "Add+"}

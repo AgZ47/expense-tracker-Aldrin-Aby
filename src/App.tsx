@@ -25,8 +25,8 @@ function App() {
         id: "1",
         amount: 500,
         category: "expense",
-        date: new Date("2026-09-03T12:00:00Z"),
-        desc: "pari",
+        date: new Date(),
+        desc: "Initial Transaction",
       },
     ];
   });
@@ -51,7 +51,6 @@ function App() {
 
   function handleDelete(id: string) {
     setTransactions((prev) => prev.filter((t) => t.id !== id));
-
     if (editingTransaction?.id === id) {
       setEditingTransaction(null);
     }
@@ -66,12 +65,12 @@ function App() {
     .reduce((sum, t) => sum + t.amount, 0);
 
   return (
-    <section className="bg-sky-900 h-screen flex flex-row p-2 gap-2">
-      <div className="flex flex-col gap-2 basis-4/5">
-        <div>
+    <section className="bg-sky-900 h-[100dvh] w-full flex flex-col md:flex-row p-2 gap-2 overflow-hidden">
+      <div className="flex flex-col gap-2 flex-grow md:basis-4/5 overflow-hidden">
+        <div className="shrink-0">
           <Header totalearned={totalEarned} totalspent={totalSpent} />
         </div>
-        <div className="overflow-y-auto flex flex-col gap-1">
+        <div className="overflow-y-auto flex flex-col gap-2 flex-grow pb-2 pr-1">
           {transactions.map((trans) => (
             <Transaction
               key={trans.id}
@@ -86,7 +85,8 @@ function App() {
           ))}
         </div>
       </div>
-      <div className="basis-1/5">
+
+      <div className="shrink-0 md:basis-1/5 flex flex-col justify-end">
         <Entry
           onClickHandler={handleSave}
           editingTransaction={editingTransaction}
